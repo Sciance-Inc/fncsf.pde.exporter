@@ -29,7 +29,7 @@ version_variable = [
     ]
 upload_to_repository = false
 upload_to_release = true
-build_command = "pip install poetry && poetry build
+build_command = "pip install poetry && poetry build"
 version_source = "tag"
 
 [tool.black]
