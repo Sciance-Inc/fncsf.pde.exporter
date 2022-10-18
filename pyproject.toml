@@ -28,7 +28,8 @@ version_variable = [
     "pyproject.toml:version"
     ]
 upload_to_repository = false
-build_command = "poetry build"
+upload_to_release = true
+build_command = "pip install poetry && poetry build
 version_source = "tag"
 
 [tool.black]
