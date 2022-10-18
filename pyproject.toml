@@ -29,6 +29,7 @@ version_variable = [
     ]
 upload_to_repository = false
 build_command = "poetry build"
+version_source = "tag"
 
 [tool.black]
 line-length = 139
