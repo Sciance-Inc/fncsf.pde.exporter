@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "exporter"
-version = "0.0.1"
+version = "0.0.0"
 description = "Export the data to the PDE-FNCSF platform"
 authors = ["hugo juhel <juhel.hugo@sciance.ca>"]
 

@@ -57,6 +57,7 @@ jobs:
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
   release:
+    needs: lint
     runs-on: ubuntu-latest
     concurrency: release
 
