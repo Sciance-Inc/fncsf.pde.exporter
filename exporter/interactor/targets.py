@@ -1,22 +1,28 @@
-# main.py
+#! /usr/bin/python3
+#
+# targets.py
 #
 # Project name: fncsf.pde.exporter.
 # Author: Hugo Juhel
 #
 # description:
 """
-    implements the main entrypoint of the exporter
+Specify the rules to be applied to the dataset.
 """
 
 #############################################################################
 #                                 Packages                                  #
 #############################################################################
 
-from exporter.cli import cli
+from exporter.interactor.validator import Validator
 
 #############################################################################
 #                                  Script                                   #
 #############################################################################
 
-if __name__ == "__main__":
-    cli(obj={})
+# Define the test suits
+_TARGETS = {
+    "schools.csv": Validator(
+        ("has_columns", {"columns": ["id", "name"]}),
+    ),
+}
