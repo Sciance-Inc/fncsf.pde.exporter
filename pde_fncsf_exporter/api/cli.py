@@ -19,15 +19,15 @@ from pathlib import Path
 import click
 
 # Project related packages
-from exporter.api.credentials import store_credentials
-from exporter.interactor.uploader import upload
+from pde_fncsf_exporter.api.credentials import store_credentials
+from pde_fncsf_exporter.interactor.uploader import upload
 
 #############################################################################
 #                                Constants                                  #
 #############################################################################
 
 
-@click.group
+@click.group()
 def cli():
     pass
 

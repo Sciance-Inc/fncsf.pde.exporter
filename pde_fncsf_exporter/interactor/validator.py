@@ -18,8 +18,8 @@ from typing import Any, Dict, Generator, Optional, Tuple
 
 import pandas as pd
 
-from exporter.errors import Errors
-from exporter.logger import MixinLogable
+from pde_fncsf_exporter.errors import Errors
+from pde_fncsf_exporter.logger import MixinLogable
 
 #############################################################################
 #                                 Classes                                   #

@@ -29,3 +29,9 @@ poetry install
 ```
 4. Make your changes
 5. Submit a pull request
+
+# How to build
+
+```bash
+poetry publish --build
+```

@@ -21,8 +21,8 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ClientError
 
-from exporter.errors import Errors
-from exporter.logger import get_module_logger
+from pde_fncsf_exporter.errors import Errors
+from pde_fncsf_exporter.logger import get_module_logger
 
 #############################################################################
 #                                  Script                                   #

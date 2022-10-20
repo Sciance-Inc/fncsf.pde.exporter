@@ -14,7 +14,7 @@ Specify the rules to be applied to the dataset.
 #                                 Packages                                  #
 #############################################################################
 
-from exporter.interactor.validator import Validator
+from pde_fncsf_exporter.interactor.validator import Validator
 
 #############################################################################
 #                                  Script                                   #

@@ -21,11 +21,11 @@ import awswrangler as wr
 import boto3
 import pandas as pd
 
-from exporter.api.credentials import get_credentials
-from exporter.errors import Errors
-from exporter.interactor import validate_csv
-from exporter.interactor.targets import _TARGETS
-from exporter.logger import get_module_logger
+from pde_fncsf_exporter.api.credentials import get_credentials
+from pde_fncsf_exporter.errors import Errors
+from pde_fncsf_exporter.interactor import validate_csv
+from pde_fncsf_exporter.interactor.targets import _TARGETS
+from pde_fncsf_exporter.logger import get_module_logger
 
 #############################################################################
 #                                  Script                                   #
