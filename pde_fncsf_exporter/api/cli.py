@@ -20,7 +20,7 @@ import click
 
 # Project related packages
 from pde_fncsf_exporter.api.credentials import store_credentials
-from pde_fncsf_exporter.interactor.uploader import upload
+from pde_fncsf_exporter.interactor.validator.uploader import upload
 
 #############################################################################
 #                                Constants                                  #

@@ -74,12 +74,11 @@ def upload(path: Path) -> None:
     if credentials is None:
         return
 
-    for target, validator in _TARGETS.items():
+    for target in _TARGETS:
 
-        target_name = target.split(".")[0]
-        target_path = path / target
+        target_path = path / target.path
 
-        _LOGGER.info(f"\U00002699 Processing {target} ...")
+        _LOGGER.info(f"\U00002699 Processing {target.name} ...")
         if not target_path.exists():
             raise Errors.E010(path=path)  # type: ignore
 
@@ -88,15 +87,15 @@ def upload(path: Path) -> None:
         except BaseException as err:
             raise Errors.E022(path=target_path) from err  # type: ignore
 
-        out = validate_csv(df, validator)
+        out = validate_csv(df, target.validator)
         if out is not None:
-            _LOGGER.error(f'\U0000274C Validation failed for "{target}" \U0000274C')
+            _LOGGER.error(f'\U0000274C Validation failed for "{target.name}" \U0000274C')
             _LOGGER.error(" - \t" + out)
             return
-        _LOGGER.info(f"\U00002728 {target} has been validated.")
+        _LOGGER.info(f"\U00002728 {target.name} has been validated.")
 
-        _upload_to_s3(df, target_name, credentials)
-        _LOGGER.info(f"\U0001F680 {target} has been synced with the platform.")
+        _upload_to_s3(df, target.name, credentials)
+        _LOGGER.info(f"\U0001F680 {target.name} has been synced with the platform.")
 
 
 if __name__ == "__main__":

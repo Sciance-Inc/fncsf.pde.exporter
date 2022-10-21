@@ -102,11 +102,11 @@ class Errors(metaclass=ExceptionFactory):
 
     _PROTOTYPE = ErrorPrototype
 
-    # Init and connection related errors
+    # Init errors
     E010 = "The artifact located at '{path}' does not exist."
     E011 = "Failed to store the credentails at '{path}'. Make sure you have the rights to write files at this location."
     E012 = "Failed to fetch the artifact. Please, call the configure command first."
-
+    E013 = "Failed to load the target files."
     # Data related errors
     E022 = "Failed to open the artifact located at '{path}'. Make sure the file is a valid utf-8 encoded csv."
 

@@ -18,7 +18,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-from pde_fncsf_exporter.interactor.validator import Validator
+from pde_fncsf_exporter.interactor.validator.validator import Validator
 
 #############################################################################
 #                                 Script                                    #

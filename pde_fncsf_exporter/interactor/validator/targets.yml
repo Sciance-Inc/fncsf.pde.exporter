@@ -1,0 +1,8 @@
+- name: schools
+  path: schools.csv
+  expectations:
+    - name: has_columns
+      params:
+        columns:
+          - id
+          - name
