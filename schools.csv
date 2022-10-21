@@ -1,3 +1,2 @@
-﻿id,name
-1,fofobar
-2,spamegg
+﻿id_ecole,levels,school_year,school_name,adress,city,postal_code,number_of_students,unique_id
+1,1,1,1,1,1,1,1,1
