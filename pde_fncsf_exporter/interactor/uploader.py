@@ -21,7 +21,7 @@ import awswrangler as wr
 import boto3
 import pandas as pd
 
-from pde_fncsf_exporter.api.credentials import get_credentials
+from pde_fncsf_exporter.api.credentials import get_credentials, Credentials
 from pde_fncsf_exporter.errors import Errors
 from pde_fncsf_exporter.interactor import validate_csv
 from pde_fncsf_exporter.interactor.targets import _TARGETS
@@ -36,13 +36,10 @@ _LOGGER = get_module_logger("uploader")
 _BUCKET = "pde-integration"
 
 
-def _upload_to_s3(df: pd.DataFrame, key: str) -> None:
+def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
     """
     Upload the file to s3
     """
-
-    # Fetch the credentials
-    credentials = get_credentials()
 
     # Prepare the dataframe by adding the required fields
     df["id_org"] = credentials.id_org
@@ -72,6 +69,10 @@ def upload(path: Path) -> None:
         path (Path): The base path to be used
     """
 
+    credentials = get_credentials()
+    if credentials is None:
+        return
+
     for target, validator in _TARGETS.items():
 
         target_name = target.split(".")[0]
@@ -93,7 +94,7 @@ def upload(path: Path) -> None:
             return
         _LOGGER.info(f"\U00002728 {target} has been validated.")
 
-        _upload_to_s3(df, target_name)
+        _upload_to_s3(df, target_name, credentials)
         _LOGGER.info(f"\U0001F680 {target} has been synced with the platform.")
 
 

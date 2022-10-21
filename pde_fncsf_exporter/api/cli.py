@@ -29,6 +29,15 @@ from pde_fncsf_exporter.interactor.uploader import upload
 
 @click.group()
 def cli():
+    """
+    FNCSF PDE Data Exporter.
+
+    The exporter contains two commands : 'configure' and 'export'.
+
+    * Use 'configure' to configure the client for the first time. You will be asked the credentials provided by the FNCSF.
+
+    * Use 'export' to sync your local datas to the platform. The exporter must have been configured before hand.
+    """
     pass
 
 
@@ -55,7 +64,7 @@ def export(path: Path):
     Sync the datasets with the FNCSF's platform
 
     Args:
-        path (Path): The path the .csvs are located
+        path (Path): The path the .csvs are located. Use 'export .' to use the current folder.
     """
 
     path = Path(path)

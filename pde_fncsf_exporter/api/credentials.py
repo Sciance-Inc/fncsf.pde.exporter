@@ -14,6 +14,7 @@ Writes and validate the AWS key configuration
 #                                 Packages                                  #
 #############################################################################
 
+from typing import Optional
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -45,7 +46,7 @@ class Credentials:
     email: str
 
 
-def get_credentials() -> Credentials:
+def get_credentials() -> Optional[Credentials]:
     """
     Fetch the crendentials for the user
     """
@@ -55,8 +56,8 @@ def get_credentials() -> Credentials:
             credentials = json.load(file)
         return Credentials(**credentials)
     else:
-        _LOGGER.error("\U000026A0 No credentials found. Please call the `configure` command first. \U000026A0")
-        raise Errors.E012()  # type: ignore
+        _LOGGER.error("\U000026A0 No credentials has been found. Please call the `pde_fncsf_exporter configure` command first. \U000026A0")
+        return
 
 
 def store_credentials(access_key: str, secret_key: str) -> None:
