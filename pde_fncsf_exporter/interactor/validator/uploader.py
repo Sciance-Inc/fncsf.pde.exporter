@@ -20,6 +20,7 @@ from pathlib import Path
 import awswrangler as wr
 import boto3
 import pandas as pd
+import csv
 
 from pde_fncsf_exporter.api.credentials import get_credentials, Credentials
 from pde_fncsf_exporter.errors import Errors
@@ -33,7 +34,7 @@ from pde_fncsf_exporter.logger import get_module_logger
 
 
 _LOGGER = get_module_logger("uploader")
-_BUCKET = "pde-integration"
+_BUCKET = "pde-integration/landing-zone"
 _TARGETS = parse_targets()
 
 
@@ -48,7 +49,7 @@ def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
 
     # Storing data on Data Lake
     try:
-        wr.s3.to_parquet(
+        wr.s3.to_csv(
             df=df,
             boto3_session=boto3.Session(aws_access_key_id=credentials.access_key, aws_secret_access_key=credentials.secret_key),
             path=f"s3://{_BUCKET}/{credentials.username}/{key}",
@@ -57,6 +58,8 @@ def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
             sanitize_columns=True,
             index=False,
             compression="gzip",
+            quoting=csv.QUOTE_NONE,
+            encoding="utf-8",
         )
     except BaseException as error:
         raise Errors.E040() from error  # type: ignore
