@@ -38,14 +38,69 @@ _BUCKET = "pde-integration/landing-zone"
 _TARGETS = parse_targets()
 
 
-def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
+_SCHEMA = {}
+_SCHEMA["schools"] = {
+    "school_id": pd.StringDtype(),
+    "levels": pd.Int64Dtype(),
+    "school_year": pd.Int64Dtype(),
+    "school_name": pd.StringDtype(),
+    "adress": pd.StringDtype(),
+    "city": pd.StringDtype(),
+    "postal_code": pd.StringDtype(),
+    "number_of_students": pd.Int64Dtype(),
+}
+
+_SCHEMA["job_postings"] = {
+    "title": pd.StringDtype(),
+    "contract_type": pd.Int64Dtype(),
+    "fte": pd.Float64Dtype(),
+    "posting_start_date": pd.StringDtype(),
+    "posting_end_date": pd.StringDtype(),
+    "hired": pd.Int64Dtype(),
+    "school_id": pd.StringDtype(),
+}
+
+_SCHEMA["teachers"] = {
+    "teacher_id": pd.StringDtype(),
+    "school_year": pd.Int64Dtype(),
+    "fte": pd.Float64Dtype(),
+    "qualifications": pd.Int64Dtype(),
+    "speciality": pd.Int64Dtype(),
+    "contract_type": pd.Int64Dtype(),
+    "contract_start_date": pd.StringDtype(),
+    "contract_end_date": pd.StringDtype(),
+    "retirement": pd.Int64Dtype(),
+    "school_id": pd.StringDtype(),
+}
+
+
+def _format_data(df: pd.DataFrame, key: str, credentials: Credentials) -> pd.DataFrame:
     """
-    Upload the file to s3
+    Set the appropriate data types.
     """
+
+    df = df.copy()
+
+    schema = _SCHEMA.get(key, None)
+    if not schema:
+        _LOGGER.info(f"\U0000270B Missing schema specification for artifact `{key}`.")
+    else:
+        try:
+            df = df.astype(schema)
+        except BaseException as error:
+            raise Errors.E023(name=key) from error  # type: ignore
 
     # Prepare the dataframe by adding the required fields
     df["id_org"] = credentials.id_org
     df["inserted_date"] = pd.Timestamp.now()
+
+    return df
+
+
+def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
+    """
+    Upload the file to s3
+    """
 
     # Storing data on Data Lake
     try:
@@ -58,7 +113,7 @@ def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
             sanitize_columns=True,
             index=False,
             compression="gzip",
-            quoting=csv.QUOTE_NONE,
+            # quoting=csv.QUOTE_NONNUMERIC,
             encoding="utf-8",
         )
     except BaseException as error:
@@ -90,7 +145,9 @@ def upload(path: Path) -> None:
         except BaseException as err:
             raise Errors.E022(path=target_path) from err  # type: ignore
 
-        out = validate_csv(df, target.validator)
+        formatted = _format_data(df, target.name, credentials)
+        out = validate_csv(formatted, target.validator)
+
         if out is not None:
             _LOGGER.error(f'\U0000274C Validation failed for "{target.name}" \U0000274C')
             _LOGGER.error(" - \t" + out)

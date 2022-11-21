@@ -107,8 +107,10 @@ class Errors(metaclass=ExceptionFactory):
     E011 = "Failed to store the credentails at '{path}'. Make sure you have the rights to write files at this location."
     E012 = "Failed to fetch the artifact. Please, call the configure command first."
     E013 = "Failed to load the target files."
+
     # Data related errors
     E022 = "Failed to open the artifact located at '{path}'. Make sure the file is a valid utf-8 encoded csv."
+    E023 = "Failed to set the appropiate type for the dataframe '{name}'. Please make sure the data you have entered match their specifications."
 
     # Validator related errors
     E030 = "validator : the rule '{rule_name}' is not registered."
