@@ -41,12 +41,17 @@ _TARGETS = parse_targets()
 _SCHEMA = {}
 _SCHEMA["schools"] = {
     "school_id": pd.StringDtype(),
-    "levels": pd.Int64Dtype(),
     "school_year": pd.Int64Dtype(),
     "school_name": pd.StringDtype(),
     "adress": pd.StringDtype(),
     "city": pd.StringDtype(),
     "postal_code": pd.StringDtype(),
+}
+
+_SCHEMA["students"] = {
+    "school_id": pd.StringDtype(),
+    "levels": pd.Int64Dtype(),
+    "school_year": pd.Int64Dtype(),
     "number_of_students": pd.Int64Dtype(),
 }
 

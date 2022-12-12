@@ -1,3 +1,4 @@
+# Schools
 - name: schools
   path: schools.csv
   expectations:
@@ -5,31 +6,28 @@
       params:
         columns:
           - school_id
-          - levels
           - school_year
           - school_name
           - adress
           - city
           - postal_code
-          - number_of_students
           - id_org
           - inserted_date
     - name: has_types
       params:
         want:
           school_id: string
-          levels: Int64
           school_year: Int64
           school_name: string
           adress: string
           city: string
           postal_code: string
-          number_of_students: Int64
     - name: is_unique
       params:
         columns:
           - school_id
 
+# Job postings
 - name: job_postings
   path: job_postings.csv
   expectations:
@@ -56,6 +54,7 @@
           hired: Int64
           school_id: string
 
+# Teachers
 - name: teachers
   path: teachers.csv
   expectations:
@@ -88,14 +87,24 @@
           contract_end_date: string
           school_id: string
 
-
-
-
-
-
-
-
-
-
-
-
+# Students
+- name: students
+  path: students.csv
+  expectations:
+    - name: has_columns
+      params:
+        columns:
+          - school_id
+          - levels
+          - school_year
+          - number_of_students
+          - id_org
+          - inserted_date
+    - name: has_types
+      params:
+        want:
+          school_id: string
+          levels: Int64
+          school_year: Int64
+          number_of_students: Int64
+          
