@@ -40,42 +40,42 @@ _TARGETS = parse_targets()
 
 _SCHEMA = {}
 _SCHEMA["schools"] = {
-    "school_id": pd.StringDtype(),
-    "school_year": pd.Int64Dtype(),
-    "school_name": pd.StringDtype(),
-    "adress": pd.StringDtype(),
-    "city": pd.StringDtype(),
-    "postal_code": pd.StringDtype(),
+    "school_id": pd.StringDtype(),  # type: ignore
+    "school_year": pd.Int64Dtype(),  # type: ignore
+    "school_name": pd.StringDtype(),  # type: ignore
+    "adress": pd.StringDtype(),  # type: ignore
+    "city": pd.StringDtype(),  # type: ignore
+    "postal_code": pd.StringDtype(),  # type: ignore
 }
 
 _SCHEMA["students"] = {
-    "school_id": pd.StringDtype(),
+    "school_id": pd.StringDtype(),  # type: ignore
     "levels": pd.Int64Dtype(),
     "school_year": pd.Int64Dtype(),
     "number_of_students": pd.Int64Dtype(),
 }
 
 _SCHEMA["job_postings"] = {
-    "title": pd.StringDtype(),
+    "title": pd.StringDtype(),  # type: ignore
     "contract_type": pd.Int64Dtype(),
     "fte": pd.Float64Dtype(),
-    "posting_start_date": pd.StringDtype(),
-    "posting_end_date": pd.StringDtype(),
+    "posting_start_date": pd.StringDtype(),  # type: ignore
+    "posting_end_date": pd.StringDtype(),  # type: ignore
     "hired": pd.Int64Dtype(),
-    "school_id": pd.StringDtype(),
+    "school_id": pd.StringDtype(),  # type: ignore
 }
 
 _SCHEMA["teachers"] = {
-    "teacher_id": pd.StringDtype(),
+    "teacher_id": pd.StringDtype(),  # type: ignore
     "school_year": pd.Int64Dtype(),
     "fte": pd.Float64Dtype(),
     "qualifications": pd.Int64Dtype(),
     "speciality": pd.Int64Dtype(),
     "contract_type": pd.Int64Dtype(),
-    "contract_start_date": pd.StringDtype(),
-    "contract_end_date": pd.StringDtype(),
+    "contract_start_date": pd.StringDtype(),  # type: ignore
+    "contract_end_date": pd.StringDtype(),  # type: ignore
     "retirement": pd.Int64Dtype(),
-    "school_id": pd.StringDtype(),
+    "school_id": pd.StringDtype(),  # type: ignore
 }
 
 
