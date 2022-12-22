@@ -30,8 +30,32 @@ poetry install
 4. Make your changes
 5. Submit a pull request
 
-# How to build
+# How to build the docker
 
 ```bash
-poetry publish --build
+docker build -t fncsf_pde_exporter -f docker/Dockerfile .
 ```
+
+# How to run the docker
+
+## As a docker run
+```bash
+docker run  -e PDE_AWS_ACCESS_KEY_ID=<the AWS secret key id> -e PDE_AWS_SECRET_ACCESS_KEY=<the AWS secret access key> -v <absolute path to the csvs folder>:/upload fncsf_pde_exporter
+```
+
+## As a docker-compose file
+
+```bash
+version: '3.9'
+
+services:
+  exporter:
+    image: fncsfpdeexporter_exporter
+    environment:
+      - PDE_AWS_ACCESS_KEY_ID=<the AWS secret key id>
+      - PDE_AWS_SECRET_ACCESS_KEY=<the AWS secret access key>
+    volumes:
+      - <absolute path to the csvs folder>:/upload
+```
+
+In a docker-compsoe, the absolute path to the csvs folder can be replaced with a relative one, starting with `./`.

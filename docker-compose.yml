@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  exporter:
+    image: fncsfpdeexporter_exporter
+    environment:
+      - PDE_AWS_ACCESS_KEY_ID=AKIAXUY26WFTFOWAAK2Y
+      - PDE_AWS_SECRET_ACCESS_KEY=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
+    volumes:
+      - ./csvs:/upload
+
+# docker run  -e PDE_AWS_ACCESS_KEY_ID=AKIAXUY26WFTFOWAAK2Y -e PDE_AWS_SECRET_ACCESS_KEY=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 -v /home/juhelh/10_projects/fncsf.pde.exporter/csvs:/upload fncsfpdeexporter_exporter ls /data

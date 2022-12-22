@@ -1,0 +1,80 @@
+ame: Build and publish the core.models Docker
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  workflow_dispatch:
+    branches:
+      - master
+      - develop
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-core-models:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract the branch name to bind the docker to the dag.
+        id: branch-name
+        uses: tj-actions/branch-names@v5.1
+
+      - name: Replace the / with - in the branch name
+        id: branch-name-parsed
+        run: |
+          ref="${github_ref////-}"
+          echo $ref
+          echo "::set-output name=target_branch::$ref"
+        env:
+          github_ref: ${{ steps.branch-name.outputs.current_branch }}
+
+      - name: Extract metadata (tags, labels) for the core_models Docker
+        id: meta_core_models
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: ${{ steps.branch-name-parsed.outputs.target_branch }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          file: depechecode/Dockerfile
+          push: true
+          tags: ${{ steps.meta_core_models.outputs.tags }}
+          labels: ${{ steps.meta_core_models.outputs.labels }}
+
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: success()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
