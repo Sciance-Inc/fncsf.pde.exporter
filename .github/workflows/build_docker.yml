@@ -32,7 +32,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract the branch name to bind the docker to the dag.
+      - name: Extract the branch name to bind to the docker.
         id: branch-name
         uses: tj-actions/branch-names@v5.1
 
@@ -56,7 +56,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
-          file: depechecode/Dockerfile
+          file: docker/Dockerfile
           push: true
           tags: ${{ steps.meta_core_models.outputs.tags }}
           labels: ${{ steps.meta_core_models.outputs.labels }}
