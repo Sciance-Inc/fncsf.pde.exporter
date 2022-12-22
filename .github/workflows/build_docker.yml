@@ -1,4 +1,4 @@
-name: Build and publish the core.models Docker
+name: Build and publish the FNCSF_PDE_EXPORTER
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
         run: |
           ref="${github_ref////-}"
           echo $ref
-          echo "::set-output name=target_branch::$ref"
+          echo "target_branch=$ref" >> $GITHUB_OUTPUT
         env:
           github_ref: ${{ steps.branch-name.outputs.current_branch }}
 
