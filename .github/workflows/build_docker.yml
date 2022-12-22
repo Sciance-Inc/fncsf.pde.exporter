@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push-core-models:
+  build-and-push-core-fncsf-pde-exporter:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -45,8 +45,8 @@ jobs:
         env:
           github_ref: ${{ steps.branch-name.outputs.current_branch }}
 
-      - name: Extract metadata (tags, labels) for the core_models Docker
-        id: meta_core_models
+      - name: Extract metadata (tags, labels) for the pde_fncsf_exporter Docker
+        id: meta_fncsf_pde_exporter
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -58,8 +58,8 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
-          tags: ${{ steps.meta_core_models.outputs.tags }}
-          labels: ${{ steps.meta_core_models.outputs.labels }}
+          tags: ${{ steps.meta_fncsf_pde_exporter.outputs.tags }}
+          labels: ${{ steps.meta_fncsf_pde_exporter.outputs.labels }}
 
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
