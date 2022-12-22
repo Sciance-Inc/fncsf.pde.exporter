@@ -135,4 +135,4 @@ dmypy.json
 
 
 # testing Data 
-data/
+csvs/
