@@ -16,6 +16,7 @@ Writes and validate the AWS key configuration
 
 from typing import Optional
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -46,11 +47,36 @@ class Credentials:
     email: str
 
 
+def _keys_to_credentials(access_key, secret_key) -> Optional[Credentials]:
+    """
+    Fetch the credentials from the AWS keys
+    """
+
+    user = boto3.client("iam", aws_access_key_id=access_key, aws_secret_access_key=secret_key).get_user()["User"]
+    tags = {item["Key"]: item["Value"] for item in user["Tags"]}
+    tags["username"] = user["UserName"]
+
+    return Credentials(access_key=access_key, secret_key=secret_key, **tags)
+
+
 def get_credentials() -> Optional[Credentials]:
     """
     Fetch the crendentials for the user
     """
 
+    # Fetch the credentials from the environment variables first
+    access_key = os.environ.get("PDE_AWS_ACCESS_KEY_ID", None)
+    secret_key = os.environ.get("PDE_AWS_SECRET_ACCESS_KEY", None)
+    if access_key and secret_key:
+        _LOGGER.info("\U000026A0 Credentials has ben fetched from the environment variables. Ingoring config.yaml \U000026A0")
+        try:
+            return _keys_to_credentials(access_key=access_key, secret_key=secret_key)
+        except ClientError:
+            _LOGGER.error("Invalid credentials")
+            return
+
+    # If no credentials are found in the environment variables, try to fetch them from the config file
+    _LOGGER.error("\U000026A0 Fetching credentials from the config file \U000026A0")
     if CONFIG_FILE.exists():
         with open(CONFIG_FILE, "r") as file:
             credentials = json.load(file)
@@ -72,15 +98,11 @@ def store_credentials(access_key: str, secret_key: str) -> None:
     # Fetch the username to be stored alongside the Creds
     _LOGGER.debug("Checking credentials.")
     try:
-        user = boto3.client("iam", aws_access_key_id=access_key, aws_secret_access_key=secret_key).get_user()["User"]
-        tags = {item["Key"]: item["Value"] for item in user["Tags"]}
-        tags["username"] = user["UserName"]
+        credentials = _keys_to_credentials(access_key=access_key, secret_key=secret_key)
     except ClientError:
         _LOGGER.error("Invalid credentials")
         return
-    _LOGGER.debug(f"Extracted tags : {tags}")
 
-    credentials = Credentials(access_key=access_key, secret_key=secret_key, **tags)
     try:
         CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
         with open(CONFIG_FILE, "w") as file:
