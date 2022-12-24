@@ -96,6 +96,7 @@ def _format_data(df: pd.DataFrame, key: str, credentials: Credentials) -> pd.Dat
             raise Errors.E023(name=key) from error  # type: ignore
 
     # Prepare the dataframe by adding the required fields
+
     df["id_org"] = credentials.id_org
     df["inserted_date"] = pd.Timestamp.now()
 
@@ -106,7 +107,6 @@ def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
     """
     Upload the file to s3
     """
-
     # Storing data on Data Lake
     try:
         wr.s3.to_csv(
@@ -159,7 +159,7 @@ def upload(path: Path) -> None:
             return
         _LOGGER.info(f"\U00002728 {target.name} has been validated.")
 
-        _upload_to_s3(df, target.name, credentials)
+        _upload_to_s3(formatted, target.name, credentials)
         _LOGGER.info(f"\U0001F680 {target.name} has been synced with the platform.")
 
 
