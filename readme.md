@@ -47,7 +47,7 @@ docker pull ghcr.io/sciance-inc/fncsf.pde.exporter:master
 
 ## As a docker run
 ```bash
-docker run  -e PDE_AWS_ACCESS_KEY_ID=<the AWS secret key id> -e PDE_AWS_SECRET_ACCESS_KEY=<the AWS secret access key> -v <absolute path to the csvs folder>:/upload fncsf_pde_exporter
+docker run  -e PDE_AWS_ACCESS_KEY_ID=<the AWS secret key id> -e PDE_AWS_SECRET_ACCESS_KEY=<the AWS secret access key> -v <absolute path to the csvs folder>:/upload ghcr.io/sciance-inc/fncsf.pde.exporter
 ```
 
 ## As a docker-compose file
