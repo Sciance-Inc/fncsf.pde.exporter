@@ -30,10 +30,17 @@ poetry install
 4. Make your changes
 5. Submit a pull request
 
-# How to build the docker
+# How to build the docker 
+> We recommend PULLING the docker instead of building it.
 
 ```bash
 docker build -t fncsf_pde_exporter -f docker/Dockerfile .
+```
+
+# How to pull the docker
+
+```bash
+docker pull ghcr.io/sciance-inc/fncsf.pde.exporter:master
 ```
 
 # How to run the docker
@@ -50,7 +57,7 @@ version: '3.9'
 
 services:
   exporter:
-    image: fncsfpdeexporter_exporter
+    image: ghcr.io/sciance-inc/fncsf.pde.exporter
     environment:
       - PDE_AWS_ACCESS_KEY_ID=<the AWS secret key id>
       - PDE_AWS_SECRET_ACCESS_KEY=<the AWS secret access key>
