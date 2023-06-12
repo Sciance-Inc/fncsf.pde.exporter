@@ -7,7 +7,7 @@
 #
 # description:
 """
-Centralize errors for the statisfactory package
+Command Line Interface for the Exporter
 """
 
 #############################################################################
