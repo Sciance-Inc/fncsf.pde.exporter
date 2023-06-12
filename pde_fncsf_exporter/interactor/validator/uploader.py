@@ -97,7 +97,7 @@ def _format_data(df: pd.DataFrame, key: str, credentials: Credentials) -> pd.Dat
 
     # Prepare the dataframe by adding the required fields
 
-    df["id_org"] = credentials.id_org
+    df["org_id"] = credentials.org_id
     df["inserted_date"] = pd.Timestamp.now()
 
     return df

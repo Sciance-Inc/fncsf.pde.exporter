@@ -43,7 +43,7 @@ class Credentials:
     access_key: str
     secret_key: str
     username: str
-    id_org: int
+    org_id: str
     email: str
 
 
