@@ -7,7 +7,7 @@
 #
 # description:
 """
-Collections of functions to be binded to the CLI
+Upload the dataframes to the s3 bucket
 """
 
 #############################################################################
@@ -20,7 +20,6 @@ from pathlib import Path
 import awswrangler as wr
 import boto3
 import pandas as pd
-import csv
 
 from pde_fncsf_exporter.api.credentials import get_credentials, Credentials
 from pde_fncsf_exporter.errors import Errors
@@ -41,41 +40,36 @@ _TARGETS = parse_targets()
 _SCHEMA = {}
 _SCHEMA["schools"] = {
     "school_id": pd.StringDtype(),  # type: ignore
-    "school_year": pd.Int64Dtype(),  # type: ignore
-    "school_name": pd.StringDtype(),  # type: ignore
-    "adress": pd.StringDtype(),  # type: ignore
+    "name": pd.StringDtype(),  # type: ignore
+    "address": pd.StringDtype(),  # type: ignore
     "city": pd.StringDtype(),  # type: ignore
     "postal_code": pd.StringDtype(),  # type: ignore
 }
 
 _SCHEMA["students"] = {
     "school_id": pd.StringDtype(),  # type: ignore
-    "levels": pd.Int64Dtype(),
+    "division": pd.Int64Dtype(),
     "school_year": pd.Int64Dtype(),
-    "number_of_students": pd.Int64Dtype(),
+    "nbr_immersion_students": pd.Int64Dtype(),
+    "nbr_fls_students": pd.Int64Dtype(),
+    "nbr_other_fr_pgr_students": pd.Int64Dtype(),
+    "nbr_total_students": pd.Int64Dtype(),
 }
 
-_SCHEMA["job_postings"] = {
-    "title": pd.StringDtype(),  # type: ignore
-    "contract_type": pd.Int64Dtype(),
-    "fte": pd.Float64Dtype(),
-    "posting_start_date": pd.StringDtype(),  # type: ignore
-    "posting_end_date": pd.StringDtype(),  # type: ignore
-    "hired": pd.Int64Dtype(),
-    "school_id": pd.StringDtype(),  # type: ignore
+_SCHEMA["hiring_situation"] = {
+    "school_year": pd.Int64Dtype(),  # type: ignore
+    "nbr_teacher_required": pd.Int64Dtype(),  # type: ignore
+    "nbr_teacher_missing": pd.Float64Dtype(),  # type: ignore
 }
 
 _SCHEMA["teachers"] = {
     "teacher_id": pd.StringDtype(),  # type: ignore
     "school_year": pd.Int64Dtype(),
-    "fte": pd.Float64Dtype(),
-    "qualifications": pd.Int64Dtype(),
-    "speciality": pd.Int64Dtype(),
-    "contract_type": pd.Int64Dtype(),
-    "contract_start_date": pd.StringDtype(),  # type: ignore
-    "contract_end_date": pd.StringDtype(),  # type: ignore
-    "retirement": pd.Int64Dtype(),
-    "school_id": pd.StringDtype(),  # type: ignore
+    "is_full_time": pd.BooleanDtype(),
+    "certification_status": pd.Int64Dtype(),
+    "division": pd.Int64Dtype(),
+    "program": pd.Int64Dtype(),
+    "employment_status": pd.StringDtype(),  # type: ignore
 }
 
 
@@ -96,9 +90,7 @@ def _format_data(df: pd.DataFrame, key: str, credentials: Credentials) -> pd.Dat
             raise Errors.E023(name=key) from error  # type: ignore
 
     # Prepare the dataframe by adding the required fields
-
     df["org_id"] = credentials.org_id
-    df["inserted_date"] = pd.Timestamp.now()
 
     return df
 
