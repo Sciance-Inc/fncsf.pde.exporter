@@ -59,17 +59,18 @@ _SCHEMA["students"] = {
 _SCHEMA["hiring_situation"] = {
     "school_year": pd.Int64Dtype(),  # type: ignore
     "nbr_teacher_required": pd.Int64Dtype(),  # type: ignore
-    "nbr_teacher_missing": pd.Float64Dtype(),  # type: ignore
+    "nbr_teacher_missing": pd.Int64Dtype(),  # type: ignore
 }
 
 _SCHEMA["teachers"] = {
     "teacher_id": pd.StringDtype(),  # type: ignore
+    "school_id": pd.StringDtype(),
     "school_year": pd.Int64Dtype(),
     "is_full_time": pd.BooleanDtype(),
     "certification_status": pd.Int64Dtype(),
     "division": pd.Int64Dtype(),
     "program": pd.Int64Dtype(),
-    "employment_status": pd.StringDtype(),  # type: ignore
+    "employment_status": pd.Int64Dtype(),  # type: ignore
 }
 
 
@@ -91,6 +92,9 @@ def _format_data(df: pd.DataFrame, key: str, credentials: Credentials) -> pd.Dat
 
     # Prepare the dataframe by adding the required fields
     df["org_id"] = credentials.org_id
+
+    # Set the org_id column as a string
+    df["org_id"] = df["org_id"].astype(pd.StringDtype())
 
     return df
 
@@ -131,7 +135,7 @@ def upload(path: Path) -> None:
 
     for target in _TARGETS:
 
-        target_path = path / target.path
+        target_path = path / target.path  # type: ignore
 
         _LOGGER.info(f"\U00002699 Processing {target.name} ...")
         if not target_path.exists():

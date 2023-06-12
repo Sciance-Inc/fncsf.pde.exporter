@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   exporter:
-    image: fncsfpdeexporter_exporter
+    image: ghcr.io/sciance-inc/fncsf.pde.exporter:master
     environment:
       - PDE_AWS_ACCESS_KEY_ID=<REPLACE ME WITH PDE_AWS_ACCESS_KEY>
       - PDE_AWS_SECRET_ACCESS_KEY=<REPLACE ME WITH PDE_AWS_SECRET_ACCESS_KEY>

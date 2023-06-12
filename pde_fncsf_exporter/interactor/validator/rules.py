@@ -31,7 +31,7 @@ _LOGGER = get_module_logger("uploader")
 @Validator.register(name="has_columns")
 def _expectations_has_columns(df: pd.DataFrame, columns: List[str]) -> Optional[str]:
     """
-    Check that the dataframes has the provided columns
+    Check that the dataframe has the required columns
 
     Args:
         df (pd.DataFrame): The dataframe to check

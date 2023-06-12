@@ -5,21 +5,21 @@
     - name: has_columns
       params:
         columns:
-          - org_id
           - school_id
           - name
           - address
           - city
           - postal_code
+          - org_id
     - name: has_types
       params:
         want:
-          org_id: string
           school_id: string
           name: string
           address: string
           city: string
           postal_code: string
+          org_id: string
     - name: is_unique
       params:
         columns:
@@ -39,16 +39,18 @@
           - nbr_fls_students
           - nbr_other_fr_pgr_students
           - nbr_total_students
+          - org_id
     - name: has_types
       params:
         want:
           school_id: string
-          division: string
+          division: Int64
           school_year: Int64
           nbr_immersion_students: Int64
           nbr_fls_students: Int64
           nbr_other_fr_pgr_students: Int64
           nbr_total_students: Int64
+          org_id: string
 
 # Hiring situation
 - name: hiring_situation
@@ -60,12 +62,14 @@
           - school_year
           - nbr_teacher_required
           - nbr_teacher_missing
+          - org_id
     - name: has_types
       params:
         want:
           school_year: Int64
           nbr_teacher_required: Int64
           nbr_teacher_missing: Int64
+          org_id: string
 
 # Teachers
 - name: teachers
@@ -81,7 +85,8 @@
           - certification_status
           - division
           - program
-          - employmment_status
+          - employment_status
+          - org_id
     - name: has_types
       params:
         want:
@@ -92,4 +97,5 @@
           certification_status: Int64
           division: Int64
           program: Int64
-          employmment_status: Int64
+          employment_status: Int64
+          org_id: string
