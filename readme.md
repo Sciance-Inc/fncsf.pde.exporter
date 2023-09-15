@@ -72,4 +72,4 @@ services:
       - <absolute path to the csvs folder>:/upload
 ```
 
-In a docker-compsoe, the absolute path to the csvs folder can be replaced with a relative one, starting with `./`.
+In a docker-compose, the absolute path to the csvs folder can be replaced with a relative one, starting with `./`.

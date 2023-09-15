@@ -105,17 +105,15 @@ def _upload_to_s3(df: pd.DataFrame, key: str, credentials: Credentials) -> None:
     """
     # Storing data on Data Lake
     try:
-        wr.s3.to_csv(
+        wr.s3.to_parquet(
             df=df,
             boto3_session=boto3.Session(aws_access_key_id=credentials.access_key, aws_secret_access_key=credentials.secret_key),
-            path=f"s3://{_BUCKET}/{credentials.username}/{key}",
-            dataset=True,
-            mode="overwrite",
+            path=f"s3://{_BUCKET}/{credentials.username}/{key}/data.parquet",
+            compression="snappy",
+            dataset=False,
+            # mode="overwrite",
             sanitize_columns=True,
             index=False,
-            compression="gzip",
-            # quoting=csv.QUOTE_NONNUMERIC,
-            encoding="utf-8",
         )
     except BaseException as error:
         raise Errors.E040() from error  # type: ignore
